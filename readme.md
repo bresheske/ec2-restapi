@@ -1,8 +1,20 @@
 # To Run Development
-```
+```bash
 npm i
 npm start
 ```
+
+This will start up the application, a watcher for auto-transpilation, and a watcher to auto-restart the application after transpilation. All you need to do is save a file and the application will reboot with your latest changes.
+
+# To Execute Tests
+```bash
+npm run test:local
+npm run test:d1
+```
+You'll need to actually start the application locally to start the local environment tests. 
+These are executed using newman, and created using Postman. 
+
+More documentation here: https://blog.getpostman.com/2017/10/25/writing-tests-in-postman/
 
 # To Deploy
 

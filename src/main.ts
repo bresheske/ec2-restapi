@@ -6,13 +6,13 @@ const app = express();
 app.use(express.json());
 
 // handle all of our routes
-app.get('/', (request, response) => {
+app.get('/ping', (request, response) => {
     return response.json({
-        message: "hi."
+        message: "pong"
     });
 });
 
 // start up our service
 app.listen(config.port, () =>
-    console.log(`Example app listening on port ${config.port}!`),
+    console.log(`Application listening on port ${config.port}.`),
 );
