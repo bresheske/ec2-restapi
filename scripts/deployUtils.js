@@ -13,7 +13,7 @@ exports.execFn = (name, fn) => {
     ui.startProgress(name);
     return new Promise(async (res) => {
         try {
-            const result = fn();
+            let result = fn();
             if (result && result.then)
                 result = await result;
 
