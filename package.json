@@ -7,8 +7,10 @@
     "watch": "tsc -w",
     "start:main": "node src/main",
     "start": "concurrently \"npm run watch\" \"nodemon -e js --exec \"\"npm run start:main\"\" \"",
+    
     "configure:d1": "node scripts/install-node-ec2 --e dev-1",
     "deploy:d1": "node scripts/deploy-ec2 --e dev-1",
+
     "ssh": "ssh -i ./pemfiles/aws-ec2-dev1.pem ubuntu@ec2-3-14-87-140.us-east-2.compute.amazonaws.com"
   },
   "author": "",
