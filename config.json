@@ -1,3 +1,11 @@
 {
-    "port": 8000
+    "port": 8000,
+    "environments": [
+        {
+            "name": "dev-1",
+            "type": "ec2",
+            "location": "ubuntu@ec2-18-216-97-120.us-east-2.compute.amazonaws.com",
+            "pemfile": "aws-ec2-dev1.pem"
+        }
+    ]
 }

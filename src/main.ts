@@ -1,5 +1,5 @@
 import express from 'express';
-const config = require('./config.json');
+const config = require('../config.json');
 
 // create our webapp, and configure it to be JSON.
 const app = express();

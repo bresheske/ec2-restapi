@@ -28,14 +28,16 @@ if (!env) {
     return;
 }
 
+ui.writeInfoLine(`Configuration: ${JSON.stringify(env)}`);
+
 // everything looks good, now we want to execute our steps.
 (async() => {
     const steps = [
-        () => ui.writeInfoLine(`EC2 Deployment: ${env.name}`),
-        () => utils.exec(`Building Typescript`, `npx tsc > logs/tsc.log`),
-        () => utils.exec(`Packaging Deployment`, `npx webpack ./src/main.js -o ./dist/main.js --target node --mode production > logs/pack.log`),
-        () => utils.exec(`Deploying Files`, `scp -i ./pemfiles/${env.pemfile} -r ./dist ${env.location}: > logs/files.log`),
-        () => utils.exec(`Deploying Application`, `ssh -i ./pemfiles/${env.pemfile} ${env.location} ". ~/.bashrc ; source ~/.nvm/nvm.sh ; cd ./dist ; npm i forever ; npx forever stopall ; npx forever start main.js" > logs/app.log`),
+        () => ui.writeInfoLine(`EC2 Setup For Node: ${env.name}`),
+        () => ui.writeInfoLine(`Note: This only needs to be executed once per environment.`),
+        () => utils.exec(`Installing NVM`, `ssh -o StrictHostKeyChecking=no -i pemfiles/${env.pemfile} ${env.location} ". ~/.bashrc ; curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | bash ; source ~/.nvm/nvm.sh" > logs/install-nvm.log`),
+        () => utils.exec(`Installing Node`, `ssh -o StrictHostKeyChecking=no -i pemfiles/${env.pemfile} ${env.location} ". ~/.bashrc ; source ~/.nvm/nvm.sh ; nvm install node" > logs/install-node.log`),
+        () => utils.exec(`Checking Node`, `ssh -o StrictHostKeyChecking=no -i pemfiles/${env.pemfile} ${env.location} ". ~/.bashrc ; source ~/.nvm/nvm.sh; node -v" > logs/checking-node.log`),
     ];
     for (const step of steps) {
         const res = await step();
