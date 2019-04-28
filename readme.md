@@ -27,3 +27,15 @@ These are executed using jest, and are located in the tests folder.
 
 ### Subsequent Deploys
 All you need to run is `npm run deploy:d1` (or change your configured environments). This will transpile, pack, copy files, and launch your service.
+
+### How does it work?
+EC2 is just another VM, so you get control over a system to perform computations. Our NodeJS application is a stand-alone javascript executable that needs to be told when to run.  We do this with [forever](https://www.npmjs.com/package/forever). Looking deeper into the deployment logic:
+ - First we copy all of the files with `scp -i ./pemfiles/${env.pemfile} -r ./dist ${env.user}@${env.location}: > logs/files.log`.  This is an SSH-file copy script.
+ - Then, we stop and restart the node executable like so:
+   - `. ~/.bashrc`
+   - `source ~/.nvm/nvm.sh`
+   - `cd ./dist`
+   - `npm i forever`
+   - `npx forever stopall`
+   - `npx forever start main.js`
+- So we're actually installing 'forever' in our distributable directory alongside of the webpacked main.js file. 
