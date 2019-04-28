@@ -51,7 +51,7 @@ Have you ever dev-tested your serverless lambda code locally before pushing it o
 
 In my view, what makes an architecture **great** is simply just the following:
  - **It's easy to maintain**: Meaning it's easy for developers to edit code and, more importantly, test it before impacting others and, most importantly, allows developers to take pride in their work before showing alpha bug-ridden code to their team.
- - **It's easy to deploy**: Meaning you only need to run 1 script or push 1 button to get your latest code out to a test-ready environment.
+ - **It's easy to deploy**: Meaning you only need to run 1 script or push 1 button to get your latest code out to a test-ready environment. This also opens the doors to a very positive full CI/CD cycle.
 
 ### **Point 3**: Flexibility
 AWS is not the only provider out there when it comes to hosting servers or VMs.  If you develop your code as a simple stand-alone rest service, or set of services, you're never married to AWS.  You can choose to use AWS today, and choose Azure tomorrow if you're so inclined to do so.  That's totally fine, and you can work with whatever works best for you.  Unfortunately, AWS lambda is the exact opposite.  You're defining your architecture completely specific to AWS's features and you're forced into it from here on out.  AWS has some really neat features, arguably, but it's a pretty bold decision in my opinion.
