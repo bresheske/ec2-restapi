@@ -9,8 +9,8 @@
     "start": "concurrently \"npm run watch\" \"nodemon -e js --exec \"\"npm run start:main\"\" \"",
     "configure:d1": "node scripts/install-node-ec2 --e dev-1",
     "deploy:d1": "node scripts/deploy-ec2 --e dev-1",
-    "test:d1": "newman run tests/ping.json -e tests/environments/dev-1.env.json",
-    "test:local": "newman run tests/ping.json -e tests/environments/local.env.json",
+    "test:d1": "set JEST_ENV=dev-1 && npx tsc && jest \\.spec\\.js",
+    "test:local": "set JEST_ENV=local && npx tsc && jest \\.spec\\.js",
     "ssh": "ssh -i ./pemfiles/aws-ec2-dev1.pem ubuntu@ec2-3-14-87-140.us-east-2.compute.amazonaws.com"
   },
   "author": "",
@@ -20,11 +20,14 @@
     "forever": "^1.0.0"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/express": "^4.16.1",
+    "@types/jest": "^24.0.11",
+    "axios": "^0.18.0",
     "concurrently": "^4.1.0",
     "console-ui": "^3.0.2",
+    "jest": "^24.7.1",
     "log-symbols": "^3.0.0",
-    "newman": "^4.4.1",
     "nodemon": "^1.18.11",
     "typescript": "^3.4.5",
     "webpack": "^4.30.0",

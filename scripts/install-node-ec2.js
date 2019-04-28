@@ -35,9 +35,9 @@ ui.writeInfoLine(`Configuration: ${JSON.stringify(env)}`);
     const steps = [
         () => ui.writeInfoLine(`EC2 Setup For Node: ${env.name}`),
         () => ui.writeInfoLine(`Note: This only needs to be executed once per environment.`),
-        () => utils.exec(`Installing NVM`, `ssh -o StrictHostKeyChecking=no -i pemfiles/${env.pemfile} ${env.location} ". ~/.bashrc ; curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | bash ; source ~/.nvm/nvm.sh" > logs/install-nvm.log`),
-        () => utils.exec(`Installing Node`, `ssh -o StrictHostKeyChecking=no -i pemfiles/${env.pemfile} ${env.location} ". ~/.bashrc ; source ~/.nvm/nvm.sh ; nvm install node" > logs/install-node.log`),
-        () => utils.exec(`Checking Node`, `ssh -o StrictHostKeyChecking=no -i pemfiles/${env.pemfile} ${env.location} ". ~/.bashrc ; source ~/.nvm/nvm.sh; node -v" > logs/checking-node.log`),
+        () => utils.exec(`Installing NVM`, `ssh -o StrictHostKeyChecking=no -i pemfiles/${env.pemfile} ${env.user}@${env.location} ". ~/.bashrc ; curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | bash ; source ~/.nvm/nvm.sh" > logs/install-nvm.log`),
+        () => utils.exec(`Installing Node`, `ssh -o StrictHostKeyChecking=no -i pemfiles/${env.pemfile} ${env.user}@${env.location} ". ~/.bashrc ; source ~/.nvm/nvm.sh ; nvm install node" > logs/install-node.log`),
+        () => utils.exec(`Checking Node`, `ssh -o StrictHostKeyChecking=no -i pemfiles/${env.pemfile} ${env.user}@${env.location} ". ~/.bashrc ; source ~/.nvm/nvm.sh; node -v" > logs/checking-node.log`),
     ];
     for (const step of steps) {
         const res = await step();
