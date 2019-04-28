@@ -12,9 +12,7 @@ npm run test:local
 npm run test:d1
 ```
 You'll need to actually start the application locally to start the local environment tests. 
-These are executed using newman, and created using Postman. 
-
-More documentation here: https://blog.getpostman.com/2017/10/25/writing-tests-in-postman/
+These are executed using jest, and are located in the tests folder.
 
 # To Deploy
 
