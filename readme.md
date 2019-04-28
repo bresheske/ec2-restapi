@@ -39,3 +39,22 @@ EC2 is just another VM, so you get control over a system to perform computations
    - `npx forever stopall`
    - `npx forever start main.js`
 - So we're actually installing 'forever' in our distributable directory alongside of the webpacked main.js file. 
+
+# But Why?
+Valid question. AWS has API Gateway + Lambda to execute simple functions through HTTP(S) calls.  Why would we ever go back to the "good old days" of controlling full servers (or VMs) to execute our deployables? 
+
+### **Point 1**: Scalability
+AWS Lambda was designed to be scalable, but in reality I have seen everything to the contrary.  Say you have a large application, maybe 1k lambdas in total, and each lambda has the ability to call other lambdas and await on their results.  You'll reach the maximum number of concurrent lambdas in AWS very quickly, and AWS will start doing something called "throttling".  This means, one or a couple out of the thousand you need to execute will actually just get dropped, leaving you with incomplete execution of business logic.  This leads to massive data integrity issues and very-difficult-to-trace bugs being reported, as there's no logs generated. Using EC2, you can scale up your instances automatically with elastic beanstalk, if you were inclined. Additionally, you can purchase stronger VMs or even dedicated servers. Remember, you're developing for a server, so you don't even actually have to use AWS if you don't want too. 
+
+### **Point 2**: Development Experience
+Have you ever dev-tested your serverless lambda code locally before pushing it out to an AWS environment (or perhaps out to QA, where you could be affecting the work of others)? In simple applications, you can use [serverless-offline](https://github.com/dherault/serverless-offline) which will read your YML files and, with little configuration, will execute them for you.  However, when you start utilizing other AWS features (like S3, or Firehose, or direct lambda-to-lambda, or ...) you need to basically find a plugin to override the calls to those other features and hit something that mimics those features locally instead.  You find yourself writing lots of code thats very specific to a particular environment, which results in 'zombie' code when deploying out to AWS.  **TL;DR** - I have found maintaining serverless-offine development to be extremely difficult for larger applications (but totally worth it, if AWS lambda is your choice).
+
+In my view, what makes an architecture **great** is simply just the following:
+ - **It's easy to maintain**: Meaning it's easy for developers to edit code and, more importantly, test it before impacting others and, most importantly, allows developers to take pride in their work before showing alpha bug-ridden code to their team.
+ - **It's easy to deploy**: Meaning you only need to run 1 script or push 1 button to get your latest code out to a test-ready environment.
+
+### **Point 3**: Flexibility
+AWS is not the only provider out there when it comes to hosting servers or VMs.  If you develop your code as a simple stand-alone rest service, or set of services, you're never married to AWS.  You can choose to use AWS today, and choose Azure tomorrow if you're so inclined to do so.  That's totally fine, and you can work with whatever works best for you.  Unfortunately, AWS lambda is the exact opposite.  You're defining your architecture completely specific to AWS's features and you're forced into it from here on out.  AWS has some really neat features, arguably, but it's a pretty bold decision in my opinion.
+
+### **Point 4**: YML
+This point is pretty subjective.  As a developer, I **_hate_** maintaining YML files that define how my serverless architecture should behave.  There's no YML definition, no intelliscence, and nothing preventing me from creating a copy-paste typo. Additionally, developers can't test their YML "code" until they're ready to deploy out their packages to AWS.  Again, see point 2 as to how this can interfere with other members of your team. With EC2, there's no YML and no reason why you cannot run everything locally before deployments.
