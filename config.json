@@ -15,5 +15,20 @@
             "protocol": "http",
             "pemfile": "aws-ec2-dev1.pem"
         }
-    ]
+    ],
+    "auth": {
+        "privateSigningKey": "private.key",
+        "publicVerifyingKey": "public.key",
+        "issuerName": "My Business Name",
+        "audienceName": "My Application Name",
+        "expiresIn": "1h",
+        "algorithm": "RS512",
+        "storage": {
+            "type": "",
+            "host": "",
+            "user": "",
+            "pass": "",
+            "database": ""
+        }
+    }
 }

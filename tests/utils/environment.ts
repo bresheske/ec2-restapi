@@ -23,6 +23,5 @@ export function getEnvironment(): Environment {
         ...env,
         port: config.port
     };
-    console.log(`getEnvironment: config: ${JSON.stringify(res)}`);
     return res;
 }
