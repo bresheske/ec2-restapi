@@ -1,13 +1,32 @@
 import * as mysql from 'promise-mysql';
 const config = require('../../config.json');
+import { getLogger } from "../utils/logger";
+const logger = getLogger();
 
 function getConnection() {
     return mysql.createConnection({
         host: config.auth.storage.host,
         user: config.auth.storage.user,
         password: config.auth.storage.pass,
-        database: config.auth.storage.database
+        database: config.auth.storage.database,
+        multipleStatements: true,
+        timeout: 10000
     });
+}
+
+export function escape(text: string) {
+    return mysql.escape(text);
+}
+
+export async function get<T>(id: number, table: string): Promise<T> {
+    const sql = `
+        SELECT *
+        FROM ${table}
+        WHERE id = ${id}
+        LIMIT 1
+    `;
+    const resp: T[] = await exec(sql);
+    return resp[0];
 }
 
 /**
@@ -25,7 +44,7 @@ export async function create(object: any, table: string) {
             const key = k;
             const v = object[key];
             const value = typeof(v) === 'string'
-                ? mysql.escape(`'${v}'`)
+                ? mysql.escape(`${v}`)
                 : v;
             return { key: k, value: value };
         });
@@ -34,14 +53,26 @@ export async function create(object: any, table: string) {
         VALUES (${keyValuePairs.map(p => p.value).join(',')});
         SELECT LAST_INSERT_ID();
     `;
-    const resp = await exec(sql);
-    object.id = resp[0];
+    const resp: any = await exec(sql);
+    object.id = resp[0].insertId;
     return object;
 }
 
-export async function exec<T>(sql: string): Promise<T[]>{
-    const con = await getConnection();
-    const res: Promise<T[]> = await con.query(sql) as unknown as Promise<T[]>;
-    await con.end();
-    return res;
+export async function exec<T>(sql: string): Promise<T[]> {
+    let con;
+    try {
+        con = await getConnection();
+        logger.writeDebugLine(`mysql: executing: "${sql}"`);
+        const res: T[] = await con.query(sql) as unknown as T[];
+        await con.end();
+        logger.writeDebugLine(`mysql: sql resulted in rows: ${res.length}`);
+        return res;
+    }
+    catch (ex) {
+        logger.writeError(ex);
+        if (con) {
+            await con.end();
+        }
+        throw(ex);
+    }
 }

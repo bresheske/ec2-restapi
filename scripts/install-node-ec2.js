@@ -28,8 +28,6 @@ if (!env) {
     return;
 }
 
-ui.writeInfoLine(`Configuration: ${JSON.stringify(env)}`);
-
 // everything looks good, now we want to execute our steps.
 (async() => {
     const steps = [

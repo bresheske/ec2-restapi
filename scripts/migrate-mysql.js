@@ -56,7 +56,7 @@ async function migrateDown(migrations) {
         await jsM.down();
         const mId = m.split('_')[0];
         await exec(`
-            DELETE FROM migrations
+            DELETE FROM migration
             WHERE migId = '${mId}'
         `);
         ui.writeInfoLine(`Migrated Down: ${m}`);

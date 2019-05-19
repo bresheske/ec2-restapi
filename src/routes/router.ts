@@ -1,32 +1,11 @@
 import express, { response } from 'express';
-import * as tokens from '../auth/token';
-import { IncomingHttpHeaders } from 'http';
+import * as pingRoutes from './pingRoutes';
+import * as authRoutes from './authorizationRoutes';
+import * as userRoutes from './userRoutes';
+import * as tokenRoutes from './tokenRoutes';
 import { getLogger } from '../utils/logger';
 
-const commonResponses = {
-    authorizationError: {
-        status: 403
-    }
-};
-
 const logger = getLogger();
-
-/**
- * just returns the user's authentication header.
- * @param headers request headers
- */
-function getAuthHeader(headers: IncomingHttpHeaders): string | null {
-    let authHeader =  
-        headers['authentication']
-        || headers['Authentication']
-        || headers['AUTHENTICATION'];
-    if (!authHeader) {
-        return null;
-    }
-    return Array.isArray(authHeader)
-        ? authHeader[0]
-        : authHeader;
-}
 
 /**
  * defines all of the routes for our application
@@ -34,55 +13,41 @@ function getAuthHeader(headers: IncomingHttpHeaders): string | null {
  */
 export function registerRoutes(app: express.Express) {
 
-    // all routes that do not require authentication first
-    app.get('/ping', (request, response) => {
-        return response.json({
-            message: "pong"
-        });
-    });
-
-    // allow all OPTIONS calls for preflight CORS checks.
-    app.options('/*', (request, response) => {
-        response.status(204);
-        return response.json();
-    });
-
-    // register authentication here
+    // just some proper logging
     app.use((req, res, next) => {
-        // get our auth header, if it doesn't exist just kick out early.
-        const tokenStr = getAuthHeader(req.headers);
-        if (!tokenStr || tokenStr.length === 0) {
-            logger.writeWarnLine(`router.auth: auth header not present. route: ${req.url}. method: ${req.method}.`);
-            res.status(commonResponses.authorizationError.status);
-            return res.json();
-        }
-        
-        // first we decode the token and make sure a user (subject) was passed.
-        const token = tokens.decodeToken(tokenStr);
-        const user = token && token.payload && token.payload.sub;
-        if (!user) {
-            res.status(commonResponses.authorizationError.status);
-            return res.json();
-        }
-
-        // now we validate our token.
-        const tokenValidation = tokens.verifyJwt(user, tokenStr);
-        if (!tokenValidation) {
-            res.status(commonResponses.authorizationError.status);
-            return res.json();
-        }
-
-        // we have a valid token.
+        logger.writeDebugLine(`router: method: ${req.method}. url: ${req.url}`);
         next();
     });
 
-    // all routes that require authentication before execution
-    app.get('/authPing', (request, response) => {
-        return response.json({
-            message: "pong"
-        });
+    // add some headers, like CORS.
+    app.use((req, res, next) => {
+        const allowedHeaders = [
+            'authentication',
+            'Authentication',
+            'AUTHENTICATION',
+            'Content-Type'
+        ];
+        const allowedMethods = [
+            'GET',
+            'OPTIONS'
+        ];
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', allowedMethods.join(','));
+        res.header('Access-Control-Allow-Headers', allowedHeaders.join(','));
+        next();
     });
-    
 
-    
+    // allow all OPTIONS calls for preflight CORS checks.
+    app.options('/*', (request, response) => response.json());
+
+    // all routes that do not require authentication first
+    pingRoutes.registerPreAuth(app);
+    tokenRoutes.registerPreAuth(app);
+
+    // register authentication here
+    authRoutes.registerAuth(app);
+
+    // all routes that require authentication before execution
+    pingRoutes.registerAuth(app);
+    userRoutes.registerAuth(app);
 }

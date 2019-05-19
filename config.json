@@ -11,7 +11,7 @@
             "name": "dev-1",
             "type": "ec2",
             "user": "ubuntu",
-            "location": "ec2-18-216-97-120.us-east-2.compute.amazonaws.com",
+            "location": "ec2-18-221-127-49.us-east-2.compute.amazonaws.com",
             "protocol": "http",
             "pemfile": "aws-ec2-dev1.pem"
         }

@@ -7,6 +7,7 @@ export async function up() {
             userName    VARCHAR(255),
             password    VARCHAR(255),
             salt        VARCHAR(36),
+            createdBy   VARCHAR(255),
             PRIMARY KEY (id)
         )
     `);
@@ -14,6 +15,6 @@ export async function up() {
 
 export async function down() {
     await mysql.exec(`
-        DROP TABLE users
+        DROP TABLE user
     `);
 }
