@@ -1,3 +1,17 @@
+# EC2-RestAPI
+This is a template for architecture in which an express RestAPI could be developed locally and deployed
+out to any SSH-enabled server. In this case, an AWS EC2 instance running Ubuntu.
+
+# Features
+   - Easy local development
+   - Easy server initialization
+   - Easy server deploys
+   - Easy database migrations
+   - MySQL integration
+   - Authorization using JSON web tokens
+   - Unit test execution
+   - Integration test execution
+
 # To Run Development
 ```bash
 npm i
@@ -10,6 +24,7 @@ This will start up the application, a watcher for auto-transpilation, and a watc
 ```bash
 npm run test:local
 npm run test:d1
+npm run test:unit
 ```
 You'll need to actually start the application locally to start the local environment tests. 
 These are executed using jest, and are located in the tests folder.
@@ -17,13 +32,13 @@ These are executed using jest, and are located in the tests folder.
 # To Deploy
 
 ### Deploying the First Time
- - **Requirement:** OpenSSH installed locally
- - Create an EC2 instance in AWS.
-    - Remember to allow inbound access to port 8000 (or your configured port) in your security group.
-    - Download the PEM file from aws, and copy it into your pemfiles directory.
- - Alter the `config.json` file. You should only need to change the server location (and make sure the pemfile is named correctly).
- - Run `npm run configure:d1`. This will install NVM and Node on your new EC2 instance.
- - Run `npm run deploy:d1`. This will deploy your nodejs application.
+   - **Requirement:** OpenSSH installed locally
+   - Create an EC2 instance in AWS.
+      - Remember to allow inbound access to port 8000 (or your configured port) in your security group.
+      - Download the PEM file from aws, and copy it into your pemfiles directory.
+   - Alter the `config.json` file. You should only need to change the server location (and make sure the pemfile is named correctly).
+   - Run `npm run configure:d1`. This will install NVM and Node on your new EC2 instance.
+   - Run `npm run deploy:d1`. This will deploy your nodejs application.
 
 ### Subsequent Deploys
 All you need to run is `npm run deploy:d1` (or change your configured environments). This will transpile, pack, copy files, and launch your service.
@@ -39,6 +54,15 @@ EC2 is just another VM, so you get control over a system to perform computations
    - `npx forever stopall`
    - `npx forever start main.js`
 - So we're actually installing 'forever' in our distributable directory alongside of the webpacked main.js file. 
+
+# To Run Migrations
+Make sure your `config.json` file contains your database connection settings. Then the following commands are available:
+ ```
+ npm run migrate:up
+ npm run migrate:down
+ ```
+
+This works by first creating or querying a table called 'migration' to understand which migration we're currently on, then will compare that to the files located in `/src/migrations`, then will execute the migrations that come after our current migration. 
 
 # But Why?
 Valid question. AWS has API Gateway + Lambda to execute simple functions through HTTP(S) calls.  Why would we ever go back to the "good old days" of controlling full servers (or VMs) to execute our deployables? 
