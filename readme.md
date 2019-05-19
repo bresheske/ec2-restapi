@@ -11,6 +11,8 @@ out to any SSH-enabled server. In this case, an AWS EC2 instance running Ubuntu.
    - Authorization using JSON web tokens
    - Unit test execution
    - Integration test execution
+   - Verbosity-based logging
+   - Multiple environment configuration
 
 # To Run Development
 ```bash
