@@ -43,9 +43,7 @@ export async function create(object: any, table: string) {
             // if the value is a string type, we wrap it in single quotes.
             const key = k;
             const v = object[key];
-            const value = typeof(v) === 'string'
-                ? mysql.escape(`${v}`)
-                : v;
+            const value = escape(v);
             return { key: k, value: value };
         });
     const sql = `
