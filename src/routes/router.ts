@@ -29,6 +29,8 @@ export function registerRoutes(app: express.Express) {
         ];
         const allowedMethods = [
             'GET',
+            'PUT',
+            'POST',
             'OPTIONS'
         ];
         res.header('Access-Control-Allow-Origin', '*');
