@@ -14,6 +14,8 @@ out to any SSH-enabled server. In this case, an AWS EC2 instance running Ubuntu.
    - Verbosity-based logging
    - Multiple environment configuration
    - Zero downtime deployments
+   - Auto rotating of server log files
+   - Easy load-balancing options
 
 # To Run Development
 ```bash
@@ -54,8 +56,10 @@ EC2 is just another VM, so you get control over a system to perform computations
    - `source ~/.nvm/nvm.sh`
    - `cd ./dist`
    - `npm i pm2`
+   - `npx pm2 install pm2-logrotate`
    - `npx pm2 reload main.js`
-- So we're actually installing [pm2](https://pm2.io/doc/en/runtime/overview/) in our distributable directory alongside of the webpacked main.js file. PM2 is highly configurable and does all of the magic for us for zero-downtime deployments.
+- So we're actually installing [pm2](https://pm2.io/doc/en/runtime/overview/) in our distributable directory alongside of the webpacked main.js file. PM2 is highly configurable and does all of the magic for us for zero-downtime deployments, load balancing, and log file handling.
+   - If you would like to utilize the load balancer, just read the docs for PM2 and alter the deploy script to do what you need.
 
 # To Run Migrations
 Make sure your `config.json` file contains your database connection settings. Then the following commands are available:
