@@ -10,23 +10,8 @@ const ui = new UI({
   ci: false
 });
 
-// first validate our input a little
-const envArg =
-    argv.environment
-    || argv.env
-    || argv.e;
-if (!envArg) {
-    ui.writeError(`Error: Required flag [ environment | env | e ] is missing.`);
-    return;
-}
-
-// find the environment in the config map.
-const config = require('../config.json');
-const env = config.environments.find(e => e.name === envArg);
-if (!env) {
-    ui.writeError(`Error: Could not find environment in config.json matching name '${envArg}'.`);
-    return;
-}
+// load in our configuration file
+const env = require(`../environments/config.json`);
 
 // everything looks good, now we want to execute our steps.
 // special note - mysql seems to break after webpacking with minify. 

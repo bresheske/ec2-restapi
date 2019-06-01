@@ -1,5 +1,4 @@
 import * as tokenService from "../../src/auth/token";
-const config = require('../../config.json');
 
 describe(`token`, () => {
     it(`should create basic token`, () => {

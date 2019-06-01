@@ -3,8 +3,6 @@ import { getEnvironment } from './environment';
 const req = axios.default;
 const env = getEnvironment();
 
-
-
 export function get(url: string, token?: string): axios.AxiosPromise {
     const fullUrl = env.protocol + '://' + env.location + ':' + env.port + url;
     const headers = token

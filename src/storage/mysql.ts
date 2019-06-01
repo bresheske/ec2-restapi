@@ -1,14 +1,14 @@
 import * as mysql from 'promise-mysql';
-const config = require('../../config.json');
+const config = require('../../environments/config.json');
 import { getLogger } from "../utils/logger";
 const logger = getLogger();
 
 function getConnection() {
     return mysql.createConnection({
-        host: config.auth.storage.host,
-        user: config.auth.storage.user,
-        password: config.auth.storage.pass,
-        database: config.auth.storage.database,
+        host: config.storage.host,
+        user: config.storage.user,
+        password: config.storage.pass,
+        database: config.storage.database,
         multipleStatements: true,
         timeout: 10000
     });

@@ -1,4 +1,4 @@
-const config = require('../../config.json');
+const config = require('../../environments/config.json');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const base64url = require('base64url');

@@ -1,0 +1,22 @@
+{
+    "port": 8000,
+    "name": "local",
+    "type": "dev",
+    "location": "localhost",
+    "protocol": "http",
+    "auth": {
+        "privateSigningKey": "private.key",
+        "publicVerifyingKey": "public.key",
+        "issuerName": "My Business Name",
+        "audienceName": "My Application Name",
+        "expiresIn": "1h",
+        "algorithm": "RS512"
+    },
+    "storage": {
+        "type": "",
+        "host": "",
+        "user": "",
+        "pass": "",
+        "database": ""
+    }
+}

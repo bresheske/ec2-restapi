@@ -1,7 +1,7 @@
 import express from 'express';
 import { getLogger } from "./utils/logger";
 import { registerRoutes } from "./routes/router";
-const config = require('../config.json');
+const config = require('../environments/config.json');
 const logger = getLogger();
 
 // create our webapp, and configure it to be JSON.
