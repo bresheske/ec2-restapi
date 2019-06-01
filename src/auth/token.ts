@@ -1,6 +1,7 @@
 const config = require('../../config.json');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
+const base64url = require('base64url');
 
 export function createJwt(user: string, extraData:any): string {
     const privateKeyFile = `./signingkeys/${config.auth.privateSigningKey}`;
@@ -54,6 +55,9 @@ export function decodeToken(token: string): any {
  * @param token the user's token
  */
 export function encodeToken(tokenJson: any): string {
-    // TODO: https://github.com/auth0/node-jsonwebtoken/issues/600
-    return '';
+    return [
+        base64url(JSON.stringify(tokenJson.header)),
+        base64url(JSON.stringify(tokenJson.payload)),
+        tokenJson.signature
+    ].join('.');
 }

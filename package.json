@@ -19,6 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "base64url": "^3.0.1",
     "express": "^4.16.4",
     "forever": "^1.0.0",
     "glob": "^7.1.4",

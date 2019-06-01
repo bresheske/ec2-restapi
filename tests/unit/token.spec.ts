@@ -27,10 +27,11 @@ describe(`token`, () => {
         const token = tokenService.createJwt(`brandon`, { displayName: `Brandon R` });
         const isValid = tokenService.verifyJwt(`brandon`, token);
         expect(isValid).toBeTruthy();
+
+        // basically copy the token over and expect it to verify correctly.
         const newToken = tokenService.encodeToken(tokenService.decodeToken(token));
         const newIsValid = tokenService.verifyJwt(`brandon`, newToken);
-        // TODO: https://github.com/auth0/node-jsonwebtoken/issues/600
-        // expect(newIsValid).toBeTruthy();
+        expect(newIsValid).toBeTruthy();
     });
 
     it(`should not verify compromised token`, () => {
@@ -46,8 +47,6 @@ describe(`token`, () => {
 
         // expect the verifyer to catch the edit
         const isValid = tokenService.verifyJwt(`brandon`, newToken);
-
-        // TODO: open issue: https://github.com/auth0/node-jsonwebtoken/issues/600
-        // expect(isValid).toBeFalsy();
+        expect(isValid).toBeFalsy();
     });
 });
