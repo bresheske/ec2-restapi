@@ -27,6 +27,9 @@ const env = require(`../environments/config.json`);
         () => utils.exec(`Checking Node`, `ssh -o StrictHostKeyChecking=no -i pemfiles/${env.pemfile} ${env.user}@${env.location} ". ~/.bashrc ; source ~/.nvm/nvm.sh; node -v" > logs/checking-node.log`),
         () => utils.exec(`Installing PM2 & LogRotate`, `ssh -o StrictHostKeyChecking=no -i pemfiles/${env.pemfile} ${env.user}@${env.location} ". ~/.bashrc ; source ~/.nvm/nvm.sh; cd ./dist ; npm i pm2 ; npx pm2 install pm2-logrotate ;" > logs/install-pm2.log`),
         () => utils.exec(`Deploying Application`, `ssh -i ./pemfiles/${env.pemfile} ${env.user}@${env.location} ". ~/.bashrc ; source ~/.nvm/nvm.sh ; cd ./dist ; npx pm2 start main.js" > logs/start-pm2.log`),
+        () => utils.exec(`Configuring Startup Script`, `ssh -i ./pemfiles/${env.pemfile} ${env.user}@${env.location} ". ~/.bashrc ; source ~/.nvm/nvm.sh ; cd ./dist ; sudo env PATH=$PATH:/home/ubuntu/.nvm/versions/node/v12.4.0/bin /home/ubuntu/dist/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu" > logs/startup-pm2.log`),
+        () => utils.exec(`Saving PM2 Configuration`, `ssh -i ./pemfiles/${env.pemfile} ${env.user}@${env.location} ". ~/.bashrc ; source ~/.nvm/nvm.sh ; cd ./dist ; npx pm2 save" > logs/save-pm2.log`),
+
     ];
     for (const step of steps) {
         const res = await step();

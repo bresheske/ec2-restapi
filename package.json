@@ -18,7 +18,7 @@
     "test:d1": "set JEST_ENV=d1 && jest integration.*.spec.js",
     "test:local": "set JEST_ENV=local && jest integration.*.spec.js",
     "test:unit": "npx tsc && jest unit.*.spec.js",
-    "ssh": "ssh -i ./pemfiles/aws-ec2-d1.pem ubuntu@ec2-18-217-227-211.us-east-2.compute.amazonaws.com"
+    "ssh": "ssh -i ./pemfiles/aws-ec2-d1.pem ubuntu@ec2-18-191-142-116.us-east-2.compute.amazonaws.com"
   },
   "author": "BrandonR",
   "license": "ISC",

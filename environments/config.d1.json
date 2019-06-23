@@ -3,8 +3,7 @@
     "name": "d1",
     "type": "ec2",
     "user": "ubuntu",
-    "location": "ec2-18-221-127-49.us-east-2.compute.amazonaws.com",
-    "location": "ec2-18-217-227-211.us-east-2.compute.amazonaws.com",
+    "location": "ec2-18-191-142-116.us-east-2.compute.amazonaws.com",
     "protocol": "http",
     "pemfile": "aws-ec2-d1.pem",
     "auth": {
