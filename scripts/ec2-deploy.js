@@ -21,9 +21,9 @@ const env = require(`../environments/config.json`);
         () => ui.writeInfoLine(`EC2 Deployment: ${env.name}`),
         () => utils.exec(`Building Typescript`, `npx tsc > logs/tsc.log`),
         () => utils.exec(`Packaging Deployment`, `npx webpack ./src/main.js -o ./dist/main.js --target node -d > logs/pack.log`),
-        () => utils.exec(`Deploying Files`, `scp -i ./pemfiles/${env.pemfile} -r ./dist ${env.user}@${env.location}: > logs/files.log`),
-        () => utils.exec(`Deploying Signing Keys`, `scp -i ./pemfiles/${env.pemfile} -r ./signingkeys ${env.user}@${env.location}:dist > logs/signingKeys.log`),
-        () => utils.exec(`Deploying Application`, `ssh -i ./pemfiles/${env.pemfile} ${env.user}@${env.location} ". ~/.bashrc ; source ~/.nvm/nvm.sh ; cd ./dist ; npm i pm2 ; npx pm2 install pm2-logrotate; npx pm2 reload main.js" > logs/app.log`),
+        () => utils.exec(`Deploying Files`, `scp -o StrictHostKeyChecking=no -i ./pemfiles/${env.pemfile} -r ./dist ${env.user}@${env.location}: > logs/files.log`),
+        () => utils.exec(`Deploying Signing Keys`, `scp -o StrictHostKeyChecking=no -i ./pemfiles/${env.pemfile} -r ./signingkeys ${env.user}@${env.location}:dist > logs/signingKeys.log`),
+        () => utils.exec(`Deploying Application`, `ssh -o StrictHostKeyChecking=no -i ./pemfiles/${env.pemfile} ${env.user}@${env.location} ". ~/.bashrc ; source ~/.nvm/nvm.sh ; cd ./dist ; npx pm2 reload main.js" > logs/app.log`),
     ];
     for (const step of steps) {
         const res = await step();
