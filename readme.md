@@ -17,6 +17,12 @@ out to any SSH-enabled server. In this case, an AWS EC2 instance running Ubuntu.
    - Auto rotating of server log files
    - Easy load-balancing options
 
+# Tested Environments
+   - Amazon EC2 running Ubuntu
+     - Free tier, single-core
+   - Raspberry PI (v3) running Rasbian
+     - 4 cores with clustering (load-balancing) enabled
+
 # To Run Development
 ```bash
 npm i
