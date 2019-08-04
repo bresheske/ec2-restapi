@@ -24,6 +24,8 @@
     "test:d2": "set JEST_ENV=d2 && jest integration.*.spec.js",
     "test:local": "set JEST_ENV=local && jest integration.*.spec.js",
     "test:unit": "npx tsc && jest unit.*.spec.js",
+    "test:local:load": "set JEST_ENV=local && jest load.*.spec.js",
+    "test:d2:load": "set JEST_ENV=d2 && jest load.*.spec.js",
     "ssh": "ssh -i ./pemfiles/rpi-d2.pem pi@192.168.50.142"
   },
   "author": "BrandonR",

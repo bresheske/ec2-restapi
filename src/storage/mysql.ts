@@ -2,16 +2,28 @@ import * as mysql from 'promise-mysql';
 const config = require('../../environments/config.json');
 import { getLogger } from "../utils/logger";
 const logger = getLogger();
+let pool: mysql.Pool;
 
-function getConnection() {
-    return mysql.createConnection({
-        host: config.storage.host,
-        user: config.storage.user,
-        password: config.storage.pass,
-        database: config.storage.database,
-        multipleStatements: true,
-        timeout: 10000
-    });
+/**
+ * returns a singleton instance of the pool.
+ */
+function getConnectionPool() {
+    if (!pool) {
+        pool = mysql.createPool({
+            host: config.storage.host,
+            user: config.storage.user,
+            password: config.storage.pass,
+            database: config.storage.database,
+            multipleStatements: true,
+            timeout: 10000
+        });
+    }
+    return pool;
+}
+
+async function getConnection() {
+    const pool = await getConnectionPool();
+    return pool.getConnection();
 }
 
 export function escape(text: string) {
@@ -62,14 +74,14 @@ export async function exec<T>(sql: string): Promise<T[]> {
         con = await getConnection();
         logger.writeDebugLine(`mysql: executing: "${sql}"`);
         const res: T[] = await con.query(sql) as unknown as T[];
-        await con.end();
+        con.release();
         logger.writeDebugLine(`mysql: sql resulted in rows: ${res.length}`);
         return res;
     }
     catch (ex) {
         logger.writeError(ex);
         if (con) {
-            await con.end();
+            con.release();
         }
         throw(ex);
     }

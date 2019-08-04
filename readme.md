@@ -11,6 +11,7 @@ out to any SSH-enabled server. In this case, an AWS EC2 instance running Ubuntu.
    - Authorization using JSON web tokens
    - Unit test execution
    - Integration test execution
+   - Load test execution via concurrent requests
    - Verbosity-based logging
    - Multiple environment configuration
    - Zero downtime deployments
@@ -61,6 +62,11 @@ You may dig deeper into the [configure script](./scripts/ec2-configure.js) to se
 
 ## Processor Load-Balancing
 Since we're using PM2, it's easy to spin up multiple instances for a single EC2 instance if we're using a multi-core processor. Just see the [PM2 docs](https://pm2.io/doc/en/runtime/guide/load-balancing/) and slightly alter the configure script to run what you need. *Note*: In AWS, multi-core configurations are not supported under the free-tier. You have to pay for them.
+
+See `scripts/rpi-configure.js` for an example of utilzing max cores on a raspberry pi. 
+During load testing, we see all 4 cores spinning up and processing in parallel:
+
+![parallel-processing](./docs/load-pm2.png)
 
 # To Run Migrations
 Make sure your `config.json` file contains your database connection settings. Then the following commands are available:

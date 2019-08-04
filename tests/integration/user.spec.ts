@@ -2,7 +2,7 @@ import { get, put, post } from '../utils/request';
 import * as tokens from '../../src/auth/token';
 import { User } from '../../src/entities/user';
 
-describe(`ping`, () => {
+describe(`user`, () => {
     const url = '/user';
     const authUrl = '/auth';
 
