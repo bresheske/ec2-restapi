@@ -15,10 +15,10 @@
         "algorithm": "RS512"
     },
     "storage": {
-        "type": "",
-        "host": "",
-        "user": "",
-        "pass": "",
-        "database": ""
+        "type": "mysql",
+        "host": "testauth.czjoaxiuenjn.us-east-2.rds.amazonaws.com",
+        "user": "authuser",
+        "pass": "authpass_12an",
+        "database": "auth"
     }
 }

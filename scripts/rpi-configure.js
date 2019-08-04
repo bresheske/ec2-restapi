@@ -16,7 +16,7 @@ const env = require(`../environments/config.json`);
 // everything looks good, now we want to execute our steps.
 (async() => {
     const steps = [
-        () => ui.writeInfoLine(`EC2 Setup For Node: ${env.name}`),
+        () => ui.writeInfoLine(`R-PI Setup For Node: ${env.name}`),
         () => ui.writeInfoLine(`Note: This only needs to be executed once per environment.`),
         () => utils.exec(`Building Typescript`, `npx tsc > logs/tsc.log`),
         () => utils.exec(`Packaging Deployment`, `npx webpack ./src/main.js -o ./dist/main.js --target node -d > logs/pack.log`),

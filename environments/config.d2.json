@@ -1,9 +1,11 @@
 {
     "port": 8000,
-    "name": "local",
-    "type": "dev",
-    "location": "localhost",
+    "name": "d2",
+    "type": "r-pi",
+    "user": "pi",
+    "location": "192.168.50.142",
     "protocol": "http",
+    "pemfile": "rpi-d2.pem",
     "auth": {
         "privateSigningKey": "private.key",
         "publicVerifyingKey": "public.key",

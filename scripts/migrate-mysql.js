@@ -86,6 +86,7 @@ async function migrateDown(migrations) {
             `);
         }
         else {
+            ui.writeError(ex);
             ui.writeError(`error while getting migrations from the database.`);
             return;
         }
