@@ -6,9 +6,9 @@ import * as chunker from '../../src/utils/chunkWork';
 describe(`load - create users`, () => {
     const url = '/user';
     const authUrl = '/auth';
-    const concurrency = 500;
-    const total = 5000;
-    const timeout = 60000;
+    const concurrency = 200;
+    const total = 10000;
+    const timeout = 120000;
 
     let id: number;
     let authenticatedToken: string;
